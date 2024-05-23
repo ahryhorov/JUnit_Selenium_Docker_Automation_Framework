@@ -40,7 +40,12 @@ public class WebDriverController {
     }
 
     public static void initDriver(){
-        if(Settings.isRemote){
+        boolean isRemoteRun = false;
+        if(System.getProperty("isRemoteRun") != null){
+            System.out.println("isRemoteRun: " + System.getProperty("isRemoteRun"));
+            isRemoteRun = Boolean.parseBoolean(System.getProperty("isRemoteRun"));
+        }
+        if(isRemoteRun){
             openBrowserRemote();
         } else {
             openBrowser();
