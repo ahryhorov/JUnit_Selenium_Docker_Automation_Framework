@@ -46,6 +46,7 @@ public class WebDriverController {
             isRemoteRun = Boolean.parseBoolean(System.getProperty("isRemoteRun"));
         }
         if(isRemoteRun){
+            System.out.println("DEBUG 123");
             openBrowserRemote();
         } else {
             openBrowser();
