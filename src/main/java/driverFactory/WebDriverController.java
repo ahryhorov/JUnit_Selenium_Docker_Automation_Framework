@@ -40,11 +40,8 @@ public class WebDriverController {
     }
 
     public static void initDriver(){
-        boolean isRemoteRun = false;
-        if(System.getProperty("isRemoteRun") != null){
-            System.out.println("isRemoteRun: " + System.getProperty("isRemoteRun"));
-            isRemoteRun = Boolean.parseBoolean(System.getProperty("isRemoteRun"));
-        }
+        String selectRunHub = System.getProperty("selectRunHub","Local");
+        boolean isRemoteRun = "Docker".equals(selectRunHub);
         if(isRemoteRun){
             System.out.println("DEBUG 123");
             openBrowserRemote();
