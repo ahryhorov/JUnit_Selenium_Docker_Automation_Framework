@@ -38,7 +38,7 @@ public class Waiters {
     }
 
     public static int getDefaultTimeout() {
-        return Math.toIntExact(10); //TODO remove hardcode
+        return Integer.parseInt(System.getProperty("defaultTimeout", ProjectPropertiesUtils.getProjectProperties().getDefaultTimeout()));
     }
 
     public static void waitForJStoLoad() {

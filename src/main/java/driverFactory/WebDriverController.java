@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import utils.ProjectPropertiesUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -16,10 +17,11 @@ public class WebDriverController {
 
     private static WebDriver driver;
 
-    public static WebDriver getDriver(){
+    public static WebDriver getDriver() {
         return driver;
     }
-    public static void startChromeDriver(){
+
+    public static void startChromeDriver() {
         WebDriverManager.chromedriver().clearDriverCache().clearResolutionCache().setup();
         driver = new ChromeDriver();
     }
@@ -34,25 +36,28 @@ public class WebDriverController {
         }
 
     }
+
     public static void openBrowser() {
         startChromeDriver();
         driver.manage().window().maximize();
     }
 
-    public static void initDriver(){
-        String selectRunHub = System.getProperty("selectRunHub","Local");
+    public static void initDriver() {
+        String selectRunHub = System.getProperty("selectRunHub", ProjectPropertiesUtils.getProjectProperties().getSelectedHub());
         boolean isRemoteRun = "Docker".equals(selectRunHub);
-        if(isRemoteRun){
-            System.out.println("DEBUG 123");
+        if (isRemoteRun) {
             openBrowserRemote();
         } else {
             openBrowser();
         }
+        setDefaultImplicitlyWait();
     }
+
     public static void openBrowserRemote() {
         startRemoteDriverForDocker();
         driver.manage().window().maximize();
     }
+
     public static void quitDriver() {
         driver.quit();
     }
@@ -67,6 +72,10 @@ public class WebDriverController {
 
     public static void setImplicitlyWait(int seconds) {
         setImplicitlyWait(seconds, TimeUnit.SECONDS);
+    }
+
+    public static void setDefaultImplicitlyWait() {
+        setImplicitlyWait(Integer.parseInt(System.getProperty("defaultTimeout", ProjectPropertiesUtils.getProjectProperties().getDefaultTimeout())), TimeUnit.SECONDS);
     }
 
 

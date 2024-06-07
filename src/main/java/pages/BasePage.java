@@ -9,4 +9,7 @@ public class BasePage {
         PageFactory.initElements(WebDriverController.getDriver(), this);
     }
 
+    public void navigateToPage(String url) {
+        WebDriverController.getDriver().get(url);
+    }
 }
