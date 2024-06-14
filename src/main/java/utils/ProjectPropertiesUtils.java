@@ -26,6 +26,7 @@ public class ProjectPropertiesUtils {
         projectProperties = new ProjectProperties();
         try {
             is = ProjectPropertiesUtils.class.getClassLoader().getResourceAsStream(PROJECT_PROPERTIES_FILE);
+            //TODO FIX Properties for Parallel run
             properties.load(is);
             projectProperties.setSelectedHub(properties.getProperty("selectRunHub"));
             projectProperties.setDefaultTimeout(properties.getProperty("defaultTimeout"));

@@ -2,7 +2,7 @@ import io.qameta.allure.Step;
 import org.junit.Test;
 import pages.GoogleSearchPage;
 
-public class MainTest extends BaseTest {
+public class GoogleTest extends BaseTest {
 
 
 

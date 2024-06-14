@@ -14,23 +14,22 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 public class WebDriverController {
-
-    private static WebDriver driver;
+    private static ThreadLocal<WebDriver> driverThreadLocal = new ThreadLocal<>();
 
     public static WebDriver getDriver() {
-        return driver;
+        return driverThreadLocal.get();
     }
 
     public static void startChromeDriver() {
         WebDriverManager.chromedriver().clearDriverCache().clearResolutionCache().setup();
-        driver = new ChromeDriver();
+        driverThreadLocal.set(new ChromeDriver());
     }
 
     public static void startRemoteDriverForDocker() {
         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
         desiredCapabilities.setBrowserName("chrome");
         try {
-            driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), desiredCapabilities);
+            driverThreadLocal.set(new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), desiredCapabilities));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -39,7 +38,7 @@ public class WebDriverController {
 
     public static void openBrowser() {
         startChromeDriver();
-        driver.manage().window().maximize();
+        getDriver().manage().window().maximize();
     }
 
     public static void initDriver() {
@@ -55,19 +54,19 @@ public class WebDriverController {
 
     public static void openBrowserRemote() {
         startRemoteDriverForDocker();
-        driver.manage().window().maximize();
+        getDriver().manage().window().maximize();
     }
 
     public static void quitDriver() {
-        driver.quit();
+        getDriver().quit();
     }
 
     public static Object executeScriptJS(String script, Object... params) {
-        return ((JavascriptExecutor) driver).executeScript(script, params);
+        return ((JavascriptExecutor) getDriver()).executeScript(script, params);
     }
 
     public static void setImplicitlyWait(int timeout, TimeUnit timeUnit) {
-        driver.manage().timeouts().implicitlyWait(timeout, timeUnit);
+        getDriver().manage().timeouts().implicitlyWait(timeout, timeUnit);
     }
 
     public static void setImplicitlyWait(int seconds) {
